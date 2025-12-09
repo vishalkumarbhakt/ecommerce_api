@@ -9,7 +9,7 @@ from .views import (
     SearchHistoryGroupDetailView, SearchHistoryListCreateView,
     SearchHistoryDetailView, SearchHistoryClearView,
     CustomerSupportTicketListCreateView, CustomerSupportTicketDetailView,
-    CustomerChatListCreateView, api_root, health_check,
+    CustomerChatListCreateView, api_root, health_check, top_opensource_ui_repos,
     CardPaymentMethodView, UPIPaymentMethodView,
     CardPaymentMethodDetailView, UPIPaymentMethodDetailView,
     PaymentHistoryListView, PaymentHistoryDetailView,
@@ -29,7 +29,10 @@ from .payment_views import RetryPaymentView
 urlpatterns = [
     # Root and health check
     path('', api_root, name='api-root'),
-    path('health/', health_check, name='health_check'),    # Authentication endpoints (Legacy Token Auth - kept for backward compatibility)
+    path('health/', health_check, name='health_check'),
+    path('ui-repos/', top_opensource_ui_repos, name='top_opensource_ui_repos'),
+    
+    # Authentication endpoints (Legacy Token Auth - kept for backward compatibility)
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),  # Legacy token-based login
     path('logout/', LogoutView.as_view(), name='logout'),  # Legacy token-based logout
