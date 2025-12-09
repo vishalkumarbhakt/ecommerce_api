@@ -2100,4 +2100,95 @@ async function apiCall(endpoint, options = {}) {
 - **Item not found**: Verify product availability before adding to cart
 - **Stock issues**: Check item availability before checkout
 
+---
+
+## 📚 Documentation Endpoints
+
+### Get UI Repos Documentation
+
+Retrieve comprehensive documentation about top open source UI repositories for Electronic House Django Project.
+
+**Endpoint:** `GET /api/auth/ui-repos/`
+
+**Authentication:** None (Public endpoint)
+
+**Request:**
+```http
+GET /api/auth/ui-repos/ HTTP/1.1
+Host: yourdomain.com
+Accept: application/json
+```
+
+**Response:**
+```json
+{
+    "status": "success",
+    "title": "Top Open Source UI Repos for Electronic House Django Project",
+    "content": "# 🎨 Top Open Source UI Repos...",
+    "format": "markdown",
+    "categories": [
+        "Django Admin Themes",
+        "Django + HTMX + Tailwind Starters",
+        "Django Ecommerce Templates",
+        "Electronics-Specific Components"
+    ],
+    "documentation_url": "https://yourdomain.com/api/auth/ui-repos/"
+}
+```
+
+**Response Fields:**
+- `status` (string): Response status ("success" or "error")
+- `title` (string): Documentation title
+- `content` (string): Full markdown content of the documentation
+- `format` (string): Content format (always "markdown")
+- `categories` (array): List of documentation categories
+- `documentation_url` (string): URL to access this endpoint
+
+**Use Cases:**
+- Retrieve UI framework recommendations for Django ecommerce projects
+- Get quick-start guides for Django admin themes
+- Access implementation plans for HTMX + Tailwind integration
+- Find electronics-specific UI components
+
+**Example Usage:**
+```javascript
+// Fetch UI repos documentation
+async function getUIReposDocumentation() {
+    const response = await fetch('https://yourdomain.com/api/auth/ui-repos/');
+    const data = await response.json();
+    
+    if (data.status === 'success') {
+        // Display markdown content
+        console.log(data.title);
+        console.log(data.content);
+        console.log('Categories:', data.categories);
+    }
+}
+```
+
+**Python Example:**
+```python
+import requests
+
+response = requests.get('https://yourdomain.com/api/auth/ui-repos/')
+data = response.json()
+
+if data['status'] == 'success':
+    print(f"Title: {data['title']}")
+    print(f"Format: {data['format']}")
+    print(f"Categories: {', '.join(data['categories'])}")
+    # Process markdown content
+    markdown_content = data['content']
+```
+
+**Error Response:**
+```json
+{
+    "status": "error",
+    "message": "Documentation file not found"
+}
+```
+
+---
+
 This documentation provides a comprehensive reference for integrating with the S2Cart Customer API. For additional support or questions, please contact the development team.

@@ -188,6 +188,11 @@ def api_root(request, format=None):
     base_url = f"{scheme}://{host}"
     
     return Response({
+        # Documentation endpoints
+        'documentation': {
+            'ui_repos': f"{base_url}/api/auth/ui-repos/",
+            'api_docs': f"{base_url}/api/docs/" if hasattr(settings, 'SWAGGER_ENABLED') else None
+        },
         # JWT Authentication endpoints (Recommended)
         'jwt': {
             'login': f"{base_url}/api/token/",
@@ -1711,6 +1716,52 @@ def health_check(request):
     else:
         return Response({"status": "unhealthy", "details": "Database connection failed"}, 
                       status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def top_opensource_ui_repos(request):
+    """
+    API endpoint to get top open source UI repos documentation for Electronic House Django Project
+    Returns markdown content with Django, Tailwind, and HTMX resources
+    """
+    import os
+    
+    try:
+        # Get the documentation file path
+        base_dir = settings.BASE_DIR
+        doc_file_path = os.path.join(base_dir, 'TOP_OPENSOURCE_UI_REPOS.md')
+        
+        # Read the markdown content
+        if os.path.exists(doc_file_path):
+            with open(doc_file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            return Response({
+                "status": "success",
+                "title": "Top Open Source UI Repos for Electronic House Django Project",
+                "content": content,
+                "format": "markdown",
+                "categories": [
+                    "Django Admin Themes",
+                    "Django + HTMX + Tailwind Starters",
+                    "Django Ecommerce Templates",
+                    "Electronics-Specific Components"
+                ],
+                "documentation_url": f"{request.scheme}://{request.get_host()}/api/auth/ui-repos/"
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                "status": "error",
+                "message": "Documentation file not found"
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+    except Exception as e:
+        logger.error(f"Error loading UI repos documentation: {str(e)}")
+        return Response({
+            "status": "error",
+            "message": "Failed to load documentation"
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # New payment system views
